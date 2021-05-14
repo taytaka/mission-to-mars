@@ -1,7 +1,7 @@
 # Import tools
 from flask import Flask, render_template, redirect, url_for
 from flask_pymongo import PyMongo
-import Mission_to_Mars
+import scraping
 
 # Set up Flask
 app = Flask(__name__)
@@ -20,10 +20,11 @@ def index():
 @app.route("/scrape")
 def scrape():
     mars = mongo.db.mars
-    mars_data = Mission_to_Mars.scrape_all()
+    mars_data = scraping.scrape_all()
     mars.update({}, mars_data, upsert=True)
+    print(mars.hemispheres)
     return redirect('/', code=302)
 
 # Tell Flask to run
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
